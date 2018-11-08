@@ -1,4 +1,4 @@
-CXXFLAGS = -Wall -std=c++14
+CXXFLAGS = -Wall -std=c++14 -Wextra
 LDFLAGS=
 CPP=g++
 LD=g++
@@ -11,7 +11,7 @@ OBJS_tsp = ${SRCS_tsp:.cpp=.o}
 .SUFFIXES:
 .SUFFIXES: .o .cpp
 
-all: $(EXECS)
+all: clean $(EXECS)
 
 .cpp.o:
 	$(CPP) $(CXXFLAGS) -c $<

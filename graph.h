@@ -27,3 +27,5 @@ class EdgesMatrix {
     int e_n = 100;
     Ty e_matrix[100][100];
 };
+
+#endif
