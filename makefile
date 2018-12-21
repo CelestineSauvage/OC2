@@ -5,7 +5,7 @@ LD=g++
 
 EXECS = tsp
 
-SRCS_tsp = parse.cpp
+SRCS_tsp = main.cpp Instance.cpp TSP.cpp TSP_random.cpp
 OBJS_tsp = ${SRCS_tsp:.cpp=.o}
 
 .SUFFIXES:
