@@ -6,8 +6,12 @@
 #include <string>
 #include <stdio.h>
 #include <assert.h>
+#include <algorithm>
+#include <vector>
 
-// Problème multi-objectif à 2 poids
-struct W {int w1; int w2;};
+int* cmp (int x, int y);
+std::vector<int> eval(int n_obj, std::vector<int> *mysol);
+void random_perm(std::vector<int> *mysol);
+void print_content(std::vector<int> *mysol);
 
 #endif
