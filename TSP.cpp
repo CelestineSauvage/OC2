@@ -4,6 +4,11 @@
 #include <algorithm>
 #include <fstream>
 
+double fRand(double fMin, double fMax){
+    double f = (double)rand() / RAND_MAX;
+    return fMin + f * (fMax - fMin);
+}
+
 Sol* two_opt(Sol *sol, int id1, int id2){
  while (id1 < id2){
   std::iter_swap(sol->begin()+id1, sol->begin()+id2);
@@ -16,12 +21,12 @@ Sol* two_opt(Sol *sol, int id1, int id2){
 /*
 Calcul la somme pondérée d'une solution
 */
-float evaluations_weight(Sol *mysol, std::vector<float> weights, Instance *inst){
+double evaluations_weight(Sol *mysol, double w1, double w2, Instance *inst){
   std::vector<int> score = eval_sol(mysol, inst);
 
-  float evals = 0.0;
-  evals += weights[0]*score[0];
-  evals += weights[1]*score[1];
+  double evals = 0.0;
+  evals += w1*score[0];
+  evals += w2*score[1];
 
   return evals;
 }
@@ -79,6 +84,9 @@ Domination compare(Sol sol1, Sol sol2, Instance *inst){
   return NO_DOMINATION;
 }
 
+/*
+Filtre offline
+*/
 void filter_offline(Archive &archive, Instance *inst){
  size_t i = 0;
  size_t j = 1;
@@ -106,6 +114,9 @@ void filter_offline(Archive &archive, Instance *inst){
   } while (i < archive.size());
 }
 
+/*
+Filtre online
+*/
 void filter_online( Archive &archive, Sol new_sol, Instance *inst){
   size_t i = 0;
 while (i < archive.size()){

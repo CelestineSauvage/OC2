@@ -54,9 +54,10 @@ int main(int argc, char** argv){
   Sol mysol;
 
   Instance* to_opti= new Instance(argv[1], argv[2]);
+  
 
-  Sol new_sol = random_perm(i);
-  loop_k_opt
+  // Sol new_sol = random_perm(i);
+  // loop_k_opt
 
   // Archive myarchive = archive_rand(1);
   // for (int i = 1; i < 500; i++){

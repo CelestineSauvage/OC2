@@ -11,8 +11,11 @@
 #include <algorithm>
 #include <vector>
 
-typedef std::vector<std::vector<int>> Archive;
 typedef std::vector<int> Sol;
+typedef Sol *SolPtr;
+typedef std::vector<SolPtr> Archive;
+typedef Archive *ArchivePtr;
+
 
 enum Domination
 {
@@ -21,6 +24,8 @@ enum Domination
  NO_DOMINATION
 };
 
+Sol* two_opt(Sol *sol, int id1, int id2);
+double evaluations_weight(Sol *mysol, double w1, double w2, Instance *inst);
 std::vector<int> eval_sol(Sol *mysol, Instance *inst);
 void filter_offline(Archive &archive, Instance *inst);
 void filter_online( Archive &archive, Sol new_sol, Instance *inst);

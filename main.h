@@ -12,6 +12,6 @@
 #include "Instance.h"
 #include "TSP_random.h"
 #include "TSP.h"
-#include "TSP_Scalar.h"
+#include "TSP_scalar.h"
 
 #endif

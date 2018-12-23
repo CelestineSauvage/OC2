@@ -3,5 +3,7 @@
 
 #include "TSP.h"
 
-Sol loop_k_opt (Sol sol, std::vector<float> weights);
-Archive solution(Instance *inst);
+Sol loop_k_opt(Sol *sol, double w1, double w2, Instance *inst);
+Archive genere_scalar(double limit, double step_weight);
+
+#endif
