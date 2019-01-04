@@ -34,8 +34,8 @@ def twoplot(filename1, filename2):
             x2.append(int(coord[0]))
             y2.append(int(coord[1]))
 
-    plt.scatter(x1, y1, s=2)
-    plt.scatter(x2, y2, c="red", s=10)
+    plt.scatter(x1, y1, s=15)
+    plt.scatter(x2, y2, c="red", s=15)
     plt.show()
 
 

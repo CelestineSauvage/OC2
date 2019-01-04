@@ -5,9 +5,9 @@ using namespace std;
 /*
 Permutation d'une solution
 */
-Sol random_perm(unsigned int seed){
+Sol random_perm(){
 
-  srand(seed);
+  // srand(seed);
 
   std::vector<int> mysol;
 
@@ -24,7 +24,7 @@ Génére un ensemble de solutions aléatoires
 Archive archive_rand(int nb){
   Archive archive;
   for (int i = 0; i < nb ; i++){
-    archive.push_back(random_perm(i));
+    archive.push_back(random_perm());
   }
   return archive;
 }

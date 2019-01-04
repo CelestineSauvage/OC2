@@ -12,10 +12,7 @@
 #include <vector>
 
 typedef std::vector<int> Sol;
-typedef Sol *SolPtr;
-typedef std::vector<SolPtr> Archive;
-typedef Archive *ArchivePtr;
-
+typedef std::vector<Sol> Archive;
 
 enum Domination
 {
@@ -24,6 +21,7 @@ enum Domination
  NO_DOMINATION
 };
 
+double fRand(double fMin, double fMax);
 Sol* two_opt(Sol *sol, int id1, int id2);
 double evaluations_weight(Sol *mysol, double w1, double w2, Instance *inst);
 std::vector<int> eval_sol(Sol *mysol, Instance *inst);

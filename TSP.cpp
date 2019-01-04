@@ -4,11 +4,13 @@
 #include <algorithm>
 #include <fstream>
 
+// renvoie un double random
 double fRand(double fMin, double fMax){
     double f = (double)rand() / RAND_MAX;
     return fMin + f * (fMax - fMin);
 }
 
+// Change la solution
 Sol* two_opt(Sol *sol, int id1, int id2){
  while (id1 < id2){
   std::iter_swap(sol->begin()+id1, sol->begin()+id2);
@@ -52,7 +54,7 @@ std::vector<int> eval_sol(Sol *mysol, Instance *inst){
     std::vector<int> *dist = inst->getValue(pointA,pointB);
 
     score[0] = score[0] + dist->at(0);
-    score[1] = score[1] + + dist->at(1);
+    score[1] = score[1] + dist->at(1);
 
     pointA = pointB;
   }
@@ -60,6 +62,7 @@ std::vector<int> eval_sol(Sol *mysol, Instance *inst){
   return score;
 }
 
+// compare 2 solutions
 Domination compare(Sol sol1, Sol sol2, Instance *inst){
  int cpt = 0;
 

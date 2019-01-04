@@ -1,19 +1,18 @@
 #include "TSP_scalar.h"
 
+// Trouve les meilleurs solutions
 Sol loop_k_opt(Sol *sol, double w1, double w2, Instance *inst){
  Sol *best_sol = sol;
  Sol *new_sol;
- float best_sol_cost = evaluations_weight(best_sol, w1, w2, inst);
- float new_sol_cost;
- int id1, id2;
+ double best_sol_cost = evaluations_weight(best_sol, w1, w2, inst);
+ double new_sol_cost;
 
- for (size_t i = 0 ; i < sol.size() ; i++){
-  for (size_t j = i+1 ; j < sol.size() ; j++){
-   id1 = i;
-   id2 = j;
+ for (size_t i = 0 ; i < sol->size() ; i++){
+  for (size_t j = i+1 ; j < sol->size() ; j++){
+
    new_sol = two_opt(sol, i, j);
 
-   new_sol_cost = evaluations_weight(new_sol, weights, inst);
+   new_sol_cost = evaluations_weight(new_sol, w1, w2, inst);
    if (new_sol_cost < best_sol_cost){
     best_sol_cost = new_sol_cost;
     best_sol = new_sol;
@@ -24,20 +23,30 @@ Sol loop_k_opt(Sol *sol, double w1, double w2, Instance *inst){
  return *best_sol;
 }
 
-Archive genere_scalar(unsigned int seed, double fMin, double fMax, int limit){
+Archive genere_scalar(unsigned int seed, double fMin,
+  double fMax, int limit, Instance *inst)
+{
+
   double w1;
   double w2;
 
   Sol start_sol;
-  Sol new_sol
+  Sol new_sol;
   Archive sols;
+  Archive no_filter
 
-  std::rand(seed);
+  srand(seed);
 
   for (int i = 0; i < limit; i++){
-    start_sol = random_perm(std::randint(0, 2000000));
-    new_sol = loop_k_opt
-    sols.push_back(loop_k_opt)
+
+    // random w1 w2
+    w1 = fRand(fMin, fMax);
+    w2 = fRand(fMin, fMax);
+
+    start_sol = random_perm();
+    new_sol = loop_k_opt(&start_sol, w1, w2, inst);
+    filter_online(sols, new_sol, inst);
+    no_filter.push_back(new_sol);
   }
 
   return sols;
