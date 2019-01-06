@@ -24,7 +24,7 @@ Sol loop_k_opt(Sol *sol, double w1, double w2, Instance *inst){
 }
 
 Archive genere_scalar(unsigned int seed, double fMin,
-  double fMax, int limit, Instance *inst)
+  double fMax, int population, Instance *inst)
 {
 
   double w1;
@@ -33,11 +33,11 @@ Archive genere_scalar(unsigned int seed, double fMin,
   Sol start_sol;
   Sol new_sol;
   Archive sols;
-  Archive no_filter
+  // Archive no_filter;
 
   srand(seed);
 
-  for (int i = 0; i < limit; i++){
+  for (int i = 0; i < population; i++){
 
     // random w1 w2
     w1 = fRand(fMin, fMax);
@@ -45,8 +45,9 @@ Archive genere_scalar(unsigned int seed, double fMin,
 
     start_sol = random_perm();
     new_sol = loop_k_opt(&start_sol, w1, w2, inst);
-    filter_online(sols, new_sol, inst);
-    no_filter.push_back(new_sol);
+    sols.push_back(new_sol);
+    // filter_online(sols, new_sol, inst);
+    // no_filter.push_back(new_sol);
   }
 
   return sols;

@@ -44,32 +44,43 @@ using namespace std;
 //   return 0;
 // }
 
-int main(int argc, char** argv){
+// int main(int argc, char** argv){
+//
+//   if (argc != 4){
+//     std::cerr << "Bad args." << std::endl;
+//     return -1;
+//   }
+//
+//   std::istringstream iss( argv[3] );
+//   int val;
+//
+//   if ( iss >> val ){
+//     Sol mysol;
+//
+//     Instance* to_opti= new Instance(argv[1], argv[2]);
+//     Archive myarchive = genere_scalar(val, 0.0, 2.0, 500, to_opti);
+//
+//     std::stringstream ss;
+//
+//     ss << "./data/res_no_filter_scalar_" << argv[3] << ".txt";
+//     write_archive(myarchive, to_opti, ss.str());
+//
+//     filter_offline(myarchive, to_opti);
+//
+//     // ss << "./data/res_filter_scalar_" << argv[3] << ".txt";
+//     // write_archive(myarchive, to_opti, ss.str());
+//   }
+//
+//   return 0;
+// }
 
-  if (argc != 4){
+
+int main(int argc, char** argv){
+  if (argc != 3){
     std::cerr << "Bad args." << std::endl;
     return -1;
   }
 
-  std::istringstream iss( argv[3] );
-  int val;
-
-  if ( iss >> val ){
-    Sol mysol;
-
-    Instance* to_opti= new Instance(argv[1], argv[2]);
-    Archive myarchive = genere_scalar(val, 0.0, 2.0, 500, to_opti);
-
-    std::stringstream ss;
-
-    ss << "./data/res_no_filter_scalar_" << argv[3] << ".txt";
-    write_archive(myarchive, to_opti, ss.str());
-
-    filter_offline(myarchive, to_opti);
-
-    // ss << "./data/res_filter_scalar_" << argv[3] << ".txt";
-    // write_archive(myarchive, to_opti, ss.str());
-  }
-
-  return 0;
+  Instance* to_opti= new Instance(argv[1], argv[2]);
+  Archive myarchive = genere_pareto(3, 300, to_opti);
 }

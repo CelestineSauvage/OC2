@@ -13,5 +13,6 @@
 #include "TSP_random.h"
 #include "TSP.h"
 #include "TSP_scalar.h"
+#include "TSP_pareto.h"
 
 #endif
