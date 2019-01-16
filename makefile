@@ -1,11 +1,11 @@
-CXXFLAGS = -Wall -std=c++14 -Wextra
+CXXFLAGS = -Wall -std=c++14 -Wextra -g
 LDFLAGS=
 CPP=g++
 LD=g++
 
 EXECS = tsp
 
-SRCS_tsp = main.cpp Instance.cpp TSP.cpp TSP_random.cpp TSP_scalar.cpp TSP_pareto.cpp
+SRCS_tsp = main.cpp Instance.cpp TSP.cpp TSP_random.cpp TSP_scalar.cpp 
 OBJS_tsp = ${SRCS_tsp:.cpp=.o}
 
 .SUFFIXES:

@@ -11,9 +11,10 @@ def oneplot(filename1):
 
     with open(filename1) as file1:
         for line in file1:
+            line = line.replace("\t", " ")
             coord = (line.split(' '))
             x1.append(int(coord[0]))
-            y1.append(int(coord[1]))
+            y1.append(int(coord[-1]))
     plt.scatter(x1, y1)
     plt.show()
 
@@ -25,16 +26,18 @@ def twoplot(filename1, filename2):
     y2 = []
     with open(filename1) as file1:
         for line in file1:
+            line = line.replace("\t", " ")
             coord = (line.split(' '))
             x1.append(int(coord[0]))
-            y1.append(int(coord[1]))
+            y1.append(int(coord[-1]))
     with open(filename2) as file2:
         for line in file2:
+            line = line.replace("\t", " ")
             coord = (line.split(' '))
             x2.append(int(coord[0]))
-            y2.append(int(coord[1]))
+            y2.append(int(coord[-1]))
 
-    plt.scatter(x1, y1, s=15)
+    plt.scatter(x1, y1, s=3)
     plt.scatter(x2, y2, c="red", s=15)
     plt.show()
 

@@ -115,6 +115,7 @@ void filter_offline(Archive &archive, Instance *inst){
   if (j == archive.size())
     i++;
   } while (i < archive.size());
+
 }
 
 /*

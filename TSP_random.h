@@ -10,7 +10,9 @@
 #include <vector>
 #include "TSP.h"
 
+Sol random_perm_seed(int seed);
 Sol random_perm();
 Archive archive_rand(int nb);
+Archive archive_rand_seed(int nb);
 
 #endif
