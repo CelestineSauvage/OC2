@@ -20,6 +20,37 @@ Sol* two_opt(Sol *sol, int id1, int id2){
  return sol;
 }
 
+int get_dist(Sol *sol, int i, int j){
+  int dist = 0;
+  int pos_j = 0;
+  int i_first = false;
+  int j_first = false;
+  for(auto it = sol->begin(); it!=sol->end(); ++it){
+    if (*it == j){
+      if (!i_first){ // si on voit le j avant le i
+        pos_j = dist;
+        j_first = true;
+      }
+      else { // sinon on a trouvé la distance
+        return dist;
+      }
+    }
+
+    if (*it == i){
+      if (j_first) {
+        dist = dist - pos_j;
+      }
+      else {
+        i_first = true;
+        dist = 0;
+      }
+    }
+    dist++;
+  }
+  return dist;
+}
+
+
 /*
 Calcul la somme pondérée d'une solution
 */
@@ -32,6 +63,7 @@ double evaluations_weight(Sol *mysol, double w1, double w2, Instance *inst){
 
   return evals;
 }
+
 
 /*
 Évalue une solution

@@ -22,6 +22,7 @@ enum Domination
 };
 
 double fRand(double fMin, double fMax);
+int get_dist(Sol *sol, int i, int j);
 Sol* two_opt(Sol *sol, int id1, int id2);
 double evaluations_weight(Sol *mysol, double w1, double w2, Instance *inst);
 std::vector<int> eval_sol(Sol *mysol, Instance *inst);
