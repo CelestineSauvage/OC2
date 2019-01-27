@@ -21,12 +21,13 @@ enum Domination
  NO_DOMINATION
 };
 
-double fRand(double fMin, double fMax);
+float fRand(float fMin, float fMax);
 int get_dist(Sol *sol, int i, int j);
 Sol* two_opt(Sol *sol, int id1, int id2);
+Sol two_opt2(Sol sol, int id1, int id2);
 int evaluations_weight2
 (Sol *solution, float w1, float w2, Instance *inst);
-double evaluations_weight(Sol *mysol, double w1, double w2, Instance *inst);
+float evaluations_weight(Sol *mysol, float w1, float w2, Instance *inst);
 std::vector<int> eval_sol(Sol *mysol, Instance *inst);
 void filter_offline(Archive &archive, Instance *inst);
 void filter_online( Archive &archive, Sol new_sol, Instance *inst);

@@ -4,16 +4,25 @@
 #include <algorithm>
 #include <fstream>
 
-// renvoie un double random
-double fRand(double fMin, double fMax){
-    double f = (double)rand() / RAND_MAX;
+// renvoie un float random
+float fRand(float fMin, float fMax){
+    float f = (float)rand() / RAND_MAX;
     return fMin + f * (fMax - fMin);
 }
 
-// Change la solution
 Sol* two_opt(Sol *sol, int id1, int id2){
  while (id1 < id2){
   std::iter_swap(sol->begin()+id1, sol->begin()+id2);
+  id1++;
+  id2--;
+ }
+ return sol;
+}
+
+// Change la solution
+Sol two_opt2(Sol sol, int id1, int id2){
+ while (id1 < id2){
+  std::iter_swap(sol.begin()+id1, sol.begin()+id2);
   id1++;
   id2--;
  }
@@ -54,10 +63,10 @@ int get_dist(Sol *sol, int i, int j){
 /*
 Calcul la somme pondérée d'une solution
 */
-double evaluations_weight(Sol *mysol, double w1, double w2, Instance *inst){
+float evaluations_weight(Sol *mysol, float w1, float w2, Instance *inst){
   std::vector<int> score = eval_sol(mysol, inst);
 
-  double evals = 0.0;
+  float evals = 0.0;
   evals += w1*score[0];
   evals += w2*score[1];
 
@@ -86,28 +95,21 @@ int evaluations_weight2
 */
 std::vector<int> eval_sol(Sol *mysol, Instance *inst){
   Sol &mysolr = *mysol;
-  std::vector<int> score;
+  std::vector<int> evals;
 
-  // initialise tous les scores à 0
-  score.push_back(0);
-  score.push_back(0);
+  evals.push_back(0);
+  evals.push_back(0);
 
-  int pointA = mysolr[0];
-  int pointB = mysolr[1];
-
-  // cout << tab[0] << ';' << tab[1] << endl;
-
-  for (int i = 1; i < 100; i++){
-    pointB = mysolr[i];
-    std::vector<int> *dist = inst->getValue(pointA,pointB);
-
-    score[0] = score[0] + dist->at(0);
-    score[1] = score[1] + dist->at(1);
-
-    pointA = pointB;
+  for (size_t j = 0; j < mysol->size()-1; j++){
+    std::vector<int> *dist = inst->getValue(mysolr[j], mysolr[j+1]);
+    evals[0] += dist->at(0);
+    evals[1] += dist->at(1);
   }
+  std::vector<int> *dist = inst->getValue(mysolr[mysol->size()-1], mysolr[0]);
+  evals[0] += dist->at(0);
+  evals[1] += dist->at(1);
 
-  return score;
+  return evals;
 }
 
 // compare 2 solutions

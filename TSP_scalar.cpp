@@ -1,11 +1,11 @@
 #include "TSP_scalar.h"
 
 // Trouve les meilleurs solutions
-Sol loop_k_opt(Sol *sol, double w1, double w2, Instance *inst){
+Sol loop_k_opt(Sol *sol, float w1, float w2, Instance *inst){
  Sol *best_sol = sol;
  Sol *new_sol;
- double best_sol_cost = evaluations_weight(best_sol, w1, w2, inst);
- double new_sol_cost;
+ float best_sol_cost = evaluations_weight(best_sol, w1, w2, inst);
+ float new_sol_cost;
 
    for (size_t i = 0 ; i < sol->size() ; i++){
     for (size_t j = i+1 ; j < sol->size() ; j++){
@@ -23,16 +23,18 @@ Sol loop_k_opt(Sol *sol, double w1, double w2, Instance *inst){
  return *best_sol;
 }
 
-Sol loop_k_opt2(Sol sol, double w1, double w2, Instance *inst){
+Sol loop_k_opt2(Sol sol, float w1, float w2, Instance *inst){
  Sol best_sol = sol;
  Sol new_sol;
- double best_sol_cost = evaluations_weight2(&best_sol, w1, w2, inst);
- double new_sol_cost;
+ float best_sol_cost = evaluations_weight2(&best_sol, w1, w2, inst);
+ float new_sol_cost;
+
+ std::cout << "start value : " << best_sol_cost << std::endl;
 
    for (size_t i = 0 ; i < sol.size() ; i++){
     for (size_t j = i+1 ; j < sol.size() ; j++){
 
-     new_sol = *two_opt(&sol, i, j);
+     new_sol = two_opt2(sol, i, j);
 
      new_sol_cost = evaluations_weight2(&new_sol, w1, w2, inst);
      if (new_sol_cost < best_sol_cost){
@@ -42,15 +44,16 @@ Sol loop_k_opt2(Sol sol, double w1, double w2, Instance *inst){
     }
  }
 
+std::cout << "best value : " << best_sol_cost << std::endl;
  return best_sol;
 }
 
-Archive genere_scalar(unsigned int seed, double fMin,
-  double fMax, int population, Instance *inst)
+Archive genere_scalar(unsigned int seed, float fMin,
+  float fMax, int population, Instance *inst)
 {
 
-  double w1;
-  double w2;
+  float w1;
+  float w2;
 
   Sol start_sol;
   Archive sols;
@@ -82,7 +85,7 @@ Archive genere_scalar(unsigned int seed, double fMin,
   return sols;
 }
 
-Archive genere_scalar2(unsigned int seed, double step, Instance *inst)
+Archive genere_scalar2(unsigned int seed, float step, Instance *inst)
 {
 Archive sols;
 srand(seed);
@@ -92,7 +95,7 @@ srand(seed);
    {
     std::vector<float> weights = {w, 2.0f - w};
     Sol new_sol;
-    Sol new_sol2 = random_perm(); 
+    Sol new_sol2 = random_perm();
 
     while (new_sol != new_sol2)
     {
