@@ -65,30 +65,29 @@ using namespace std;
 
 int main(int argc, char** argv){
 
-  if (argc != 4){
+  if (argc != 5){
     std::cerr << "Bad args." << std::endl;
     return -1;
   }
 
   std::istringstream iss( argv[3] );
-  int val;
+  std::istringstream iss2( argv[4] );
+  int seed;
+  float step;
 
-  if ( iss >> val ){
-    Sol mysol;
+  if ( iss >> seed ){
+    if (iss2 >> step){
+      Sol mysol;
 
-    Instance* to_opti= new Instance(argv[1], argv[2]);
-    // Archive myarchive = genere_scalar(val, 0.1, 2.0, 500, to_opti);
-     Archive myarchive = genere_scalar2(val, 0.5, to_opti);
+      Instance* to_opti= new Instance(argv[1], argv[2]);
+      // Archive myarchive = genere_scalar(val, 0.1, 2.0, 500, to_opti);
+       Archive myarchive = genere_scalar_step(seed, step, to_opti);
 
-    std::stringstream ss;
+      std::stringstream ss;
 
-
-    // ss << "./data/res_no_filter_scalar_" << argv[3] << ".txt";
-    // write_archive(myarchive, to_opti, ss.str());
-
-    ss << "./data/res_filter_scalar_" << argv[3] << ".txt";
-    write_archive(myarchive, to_opti, ss.str());
-
+      ss << "./data/scalar_seed_" << argv[3] << "_step_" << argv[4] << ".txt";
+      write_archive(myarchive, to_opti, ss.str());
+    }
   }
 
   return 0;

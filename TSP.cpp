@@ -20,7 +20,7 @@ Sol* two_opt(Sol *sol, int id1, int id2){
 }
 
 // Change la solution
-Sol two_opt2(Sol sol, int id1, int id2){
+Sol myswap(Sol sol, int id1, int id2){
  while (id1 < id2){
   std::iter_swap(sol.begin()+id1, sol.begin()+id2);
   id1++;
@@ -29,41 +29,10 @@ Sol two_opt2(Sol sol, int id1, int id2){
  return sol;
 }
 
-int get_dist(Sol *sol, int i, int j){
-  int dist = 0;
-  int pos_j = 0;
-  int i_first = false;
-  int j_first = false;
-  for(auto it = sol->begin(); it!=sol->end(); ++it){
-    if (*it == j){
-      if (!i_first){ // si on voit le j avant le i
-        pos_j = dist;
-        j_first = true;
-      }
-      else { // sinon on a trouvé la distance
-        return dist;
-      }
-    }
-
-    if (*it == i){
-      if (j_first) {
-        dist = dist - pos_j;
-      }
-      else {
-        i_first = true;
-        dist = 0;
-      }
-    }
-    dist++;
-  }
-  return dist;
-}
-
-
 /*
 Calcul la somme pondérée d'une solution
 */
-float evaluations_weight(Sol *mysol, float w1, float w2, Instance *inst){
+float eval_weight(Sol *mysol, float w1, float w2, Instance *inst){
   std::vector<int> score = eval_sol(mysol, inst);
 
   float evals = 0.0;
@@ -73,22 +42,22 @@ float evaluations_weight(Sol *mysol, float w1, float w2, Instance *inst){
   return evals;
 }
 
-int evaluations_weight2
-(Sol *solution, float w1, float w2, Instance *inst){
-  int evals = 0;
-  Sol &mysolr = *solution;
-
-  for (size_t j = 0; j < solution->size()-1; j++){
-    std::vector<int> *dist = inst->getValue(mysolr[j], mysolr[j+1]);
-    evals += w1 * dist->at(0);
-    evals += w2 * dist->at(1);
-  }
-  std::vector<int> *dist = inst->getValue(mysolr[solution->size()-1], mysolr[0]);
-  evals += w1 * dist->at(0);
-  evals += w2 * dist->at(1);
-
-  return evals;
-}
+// int evaluations_weight2
+// (Sol *solution, float w1, float w2, Instance *inst){
+//   int evals = 0;
+//   Sol &mysolr = *solution;
+//
+//   for (size_t j = 0; j < solution->size()-1; j++){
+//     std::vector<int> *dist = inst->getValue(mysolr[j], mysolr[j+1]);
+//     evals += w1 * dist->at(0);
+//     evals += w2 * dist->at(1);
+//   }
+//   std::vector<int> *dist = inst->getValue(mysolr[solution->size()-1], mysolr[0]);
+//   evals += w1 * dist->at(0);
+//   evals += w2 * dist->at(1);
+//
+//   return evals;
+// }
 
 /*
 Évalue une solution
