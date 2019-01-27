@@ -26,7 +26,7 @@ Sol loop_k_opt(Sol *sol, double w1, double w2, Instance *inst){
 Sol loop_k_opt2(Sol sol, double w1, double w2, Instance *inst){
  Sol best_sol = sol;
  Sol new_sol;
- double best_sol_cost = evaluations_weight(&best_sol, w1, w2, inst);
+ double best_sol_cost = evaluations_weight2(&best_sol, w1, w2, inst);
  double new_sol_cost;
 
    for (size_t i = 0 ; i < sol.size() ; i++){
@@ -34,7 +34,7 @@ Sol loop_k_opt2(Sol sol, double w1, double w2, Instance *inst){
 
      new_sol = *two_opt(&sol, i, j);
 
-     new_sol_cost = evaluations_weight(&new_sol, w1, w2, inst);
+     new_sol_cost = evaluations_weight2(&new_sol, w1, w2, inst);
      if (new_sol_cost < best_sol_cost){
       best_sol_cost = new_sol_cost;
       best_sol = new_sol;
@@ -88,19 +88,19 @@ Archive sols;
 srand(seed);
 
  // Génération des points liés à un poids
- for (float w = 0.0f ; w <= 2.0f ; w+=step*2)
- {
-  std::vector<float> weights = {w, 2.0f - w};
-  Sol new_sol;
-  Sol new_sol2 = random_perm();
+  for (float w = 0.0f ; w <= 2.0f ; w+=step*2)
+   {
+    std::vector<float> weights = {w, 2.0f - w};
+    Sol new_sol;
+    Sol new_sol2 = random_perm(); 
 
-  while (new_sol != new_sol2)
-  {
-   new_sol = new_sol2;
-   new_sol2 = loop_k_opt2(new_sol, weights[0], weights[1], inst);
-  }
-  filter_online(sols, new_sol, inst);
- }
+    while (new_sol != new_sol2)
+    {
+     new_sol = new_sol2;
+     new_sol2 = loop_k_opt2(new_sol, weights[0], weights[1], inst);
+    }
+    filter_online(sols, new_sol, inst);
+}
 
  return sols;
 }

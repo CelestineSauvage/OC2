@@ -78,7 +78,7 @@ int main(int argc, char** argv){
 
     Instance* to_opti= new Instance(argv[1], argv[2]);
     // Archive myarchive = genere_scalar(val, 0.1, 2.0, 500, to_opti);
-     Archive myarchive = genere_scalar2(100, 0.008, to_opti);
+     Archive myarchive = genere_scalar2(5, 0.1, to_opti);
 
     std::stringstream ss;
 
@@ -88,6 +88,7 @@ int main(int argc, char** argv){
 
     ss << "./data/res_filter_scalar_" << argv[3] << ".txt";
     write_archive(myarchive, to_opti, ss.str());
+
   }
 
   return 0;

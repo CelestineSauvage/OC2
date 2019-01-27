@@ -64,6 +64,22 @@ double evaluations_weight(Sol *mysol, double w1, double w2, Instance *inst){
   return evals;
 }
 
+int evaluations_weight2
+(Sol *solution, float w1, float w2, Instance *inst){
+  int evals = 0;
+  Sol &mysolr = *solution;
+
+  for (size_t j = 0; j < solution->size()-1; j++){
+    std::vector<int> *dist = inst->getValue(mysolr[j], mysolr[j+1]);
+    evals += w1 * dist->at(0);
+    evals += w2 * dist->at(1);
+  }
+  std::vector<int> *dist = inst->getValue(mysolr[solution->size()-1], mysolr[0]);
+  evals += w1 * dist->at(0);
+  evals += w2 * dist->at(1);
+
+  return evals;
+}
 
 /*
 Évalue une solution
