@@ -30,6 +30,8 @@ std::vector<int> eval_sol(Sol *mysol, Instance *inst);
 void filter_offline(Archive &archive, Instance *inst);
 void filter_online( Archive &archive, Sol new_sol, Instance *inst);
 Domination compare(Sol sol1, Sol sol2, Instance *inst);
+std::vector<int> pareto_rank(Archive pop, Instance *inst);
 void write_archive(Archive &a, Instance *inst, std::string filename);
+int dominance_count(Archive pop, Sol sol, Instance *inst);
 
 #endif

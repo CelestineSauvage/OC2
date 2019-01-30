@@ -14,6 +14,9 @@ Archive selection(Archive pop, Archive baby_pop, int childs, Instance *inst);
 
 int best_parent(Archive population, std::vector<int> parents, int obji, Instance *inst);
 
+int best_parent_rank(Archive population, std::vector<int> parents, std::vector<int> rank, Instance *inst);
+
+Sol choose_and_repro_rank(Archive population, std::vector<int> rank, int k, Instance *inst);
 
 Archive new_generation(Archive population, int pcrt, int k, Instance *inst);
 

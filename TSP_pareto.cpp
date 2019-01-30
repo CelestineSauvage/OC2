@@ -48,9 +48,32 @@ int best_parent(Archive population, std::vector<int> parents, int obji, Instance
 Archive new_generation(Archive population, int childs, int k, Instance *inst){
   Archive babies;
   for (int i = 0; i < childs; i++){
-    babies.push_back(choose_and_repro(population, k, inst));
+    std::vector<int> pr = pareto_rank(pop, inst);
+    babies.push_back(choose_and_repro(population, pr, k, inst));
   }
   return selection(population, babies, childs, inst);
+}
+
+Sol choose_and_repro_rank(Archive population, std::vector<int> rank, int k, Instance *inst){
+
+  std::vector<int> parents1;
+  std::vector<int> parents2;
+
+  // liste des parents qui minimisent 1, liste des parents qui minimisent 2
+
+  for (int cpt = 0; cpt < k; cpt++){
+    parents1.push_back(rand()%population.size());
+    parents2.push_back(rand()%population.size());
+  }
+
+  int parent1 = best_parent_rank(population, parents1, rank, inst);
+  int parent2 = best_parent_rank(population, parents2, rank, inst);
+
+  // while (parent1 == parent2){
+  //   parent2 = rand()%population.size();
+  // }
+
+  return reproduction(&population[parent1], &population[parent2]);
 }
 
 // Choisit un couple de parents qui se reproduit
@@ -88,7 +111,7 @@ Sol reproduction(Sol *parent1, Sol *parent2){
   int p1_begin = rand()%(50);
   int p1_end = rand()%(50) + 50;
 
-  // on copie la suite génétique du premier parent
+  // on copie une partie du premier parent
   std::copy(parent1->begin()+p1_begin, parent1->begin()+p1_end, new_child.begin()+p1_begin);
 
   // gene manquant

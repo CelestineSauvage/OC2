@@ -101,7 +101,7 @@ int main(int argc, char** argv){
   }
 
   Instance* to_opti= new Instance(argv[1], argv[2]);
-  Archive myarchive = genere_pareto(4, 100, 100, 1000, 10, to_opti);
+  Archive myarchive = genere_pareto(4, 100, 100, 2000, 4, to_opti);
 
   std::stringstream ss;
 
