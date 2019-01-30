@@ -23,39 +23,39 @@ Sol neighborhood(Sol sol, float w1, float w2, Instance *inst){
  return best_sol;
 }
 
-Archive genere_scalar_rand(unsigned int seed, float fMin,
-  float fMax, int population, Instance *inst)
-{
-
-  float w1;
-  float w2;
-
-  Sol start_sol;
-  Archive sols;
-  // Archive no_filter;
-
-  srand(seed);
-
-  for (int i = 0; i < population; i++){
-
-    Sol new_sol;
-
-    // random w1 w2
-    w1 = fRand(fMin, fMax);
-    w2 = fRand(fMin, fMax);
-
-    start_sol = random_perm();
-    new_sol = random_perm();
-    while (start_sol != new_sol){
-      start_sol = new_sol;
-      new_sol = loop_k_opt(&start_sol, w1, w2, inst);
-    }
-
-    filter_online(sols, start_sol, inst);
-  }
-
-  return sols;
-}
+// Archive genere_scalar_rand(unsigned int seed, float fMin,
+//   float fMax, int population, Instance *inst)
+// {
+//
+//   float w1;
+//   float w2;
+//
+//   Sol start_sol;
+//   Archive sols;
+//   // Archive no_filter;
+//
+//   srand(seed);
+//
+//   for (int i = 0; i < population; i++){
+//
+//     Sol new_sol;
+//
+//     // random w1 w2
+//     w1 = fRand(fMin, fMax);
+//     w2 = fRand(fMin, fMax);
+//
+//     start_sol = random_perm();
+//     new_sol = random_perm();
+//     while (start_sol != new_sol){
+//       start_sol = new_sol;
+//       new_sol = genere_scalar_rand(&start_sol, w1, w2, inst);
+//     }
+//
+//     filter_online(sols, start_sol, inst);
+//   }
+//
+//   return sols;
+// }
 
 Archive genere_scalar_step(unsigned int seed, float step, Instance *inst)
 {

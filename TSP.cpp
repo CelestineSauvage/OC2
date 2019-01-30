@@ -10,21 +10,21 @@ float fRand(float fMin, float fMax){
     return fMin + f * (fMax - fMin);
 }
 
-Sol* two_opt(Sol *sol, int id1, int id2){
- while (id1 < id2){
-  std::iter_swap(sol->begin()+id1, sol->begin()+id2);
-  id1++;
-  id2--;
- }
- return sol;
-}
+// Sol* two_opt(Sol *sol, int id1, int id2){
+//  while (id1 < id2){
+//   std::iter_swap(sol->begin()+id1, sol->begin()+id2);
+//   id1++;
+//   id2--;
+//  }
+//  return sol;
+// }
 
 // Change la solution
-Sol myswap(Sol sol, int id1, int id2){
- while (id1 < id2){
-  std::iter_swap(sol.begin()+id1, sol.begin()+id2);
-  id1++;
-  id2--;
+Sol myswap(Sol sol, int i, int j){
+ while (i < j){
+  std::iter_swap(sol.begin()+i, sol.begin()+j);
+  i++;
+  j--;
  }
  return sol;
 }

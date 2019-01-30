@@ -1,33 +1,44 @@
 #include "TSP_pareto.h"
 
-// int total_cost(Archive archive, Instance *inst){
-//   int total = 0;
-//   for(it = archive->begin(); archive!=d->end(); ++it){
-//     total += eval_sol(it, inst)
-//   }
-//   return total;
-// }
-void selection(Archive *pop, Archive *baby_pop){
-  Sol worst_sol;
-  int pop_size = pop->size();
-  for (int i = 0; i < pop_size; i++){
-    worst_sol = (*pop)[0];
-    for (Sol sol = pop->begin(); sol != pop->end(); sol++){
-      if ();
+
+// Sélection de la population restante
+Archive selection(Archive pop, Archive baby_pop, int childs, Instance *inst){
+  int sol1;
+  int sol2;
+  int i = 0;
+
+  pop.insert(pop.end(), baby_pop.begin(), baby_pop.end() );
+  random_shuffle(pop.begin(), pop.end());
+  while (i < childs){
+    sol1 = rand()%pop.size();
+    sol2 = rand()%pop.size();
+
+    Domination res_compare = compare(pop[sol1], pop[sol2], inst);
+    if (res_compare == SOL1_DOMINATION){
+      pop.erase(pop.begin()+sol2);
+      i++;
     }
-  }
+    else if (res_compare == SOL2_DOMINATION){
+      pop.erase(pop.begin()+sol1);
+      i++;
+    }
 
-  pop->insert( pop->end(), baby_pop->begin(), baby_pop->end() );
+  }
+  return pop;
 }
 
-Archive mutation(Archive population, int pcrt, Instance *inst){
-  for (int i = 0; i < pcrt; i++){
-    choose_and_repro(population);
+// Mutation de la population
+Archive new_generation(Archive population, int childs, Instance *inst){
+  Archive babies;
+  for (int i = 0; i < childs; i++){
+    babies.push_back(choose_and_repro(population));
   }
-  return population;
+  return selection(population, babies, childs, inst);
 }
 
+// Choisit un couple de parents qui se reproduit
 
+// K tournament selection
 Sol choose_and_repro(Archive population){
   int parent1 = rand()%population.size();
   int parent2 = rand()%population.size();
@@ -35,20 +46,6 @@ Sol choose_and_repro(Archive population){
   while (parent1 == parent2){
     parent2 = rand()%population.size();
   }
-
-  // std::cout << "Parent1" << std::endl;
-  // for (auto i = population[parent1].begin(); i != population[parent1].end(); ++i)
-  //   std::cout << *i << ' ';
-  //
-  // std::cout << std::endl;
-
-  // std::cout << "Parent2" << std::endl;
-  //
-  // for (auto i = population[parent2].begin(); i != population[parent2].end(); ++i)
-  //   std::cout << *i << ' ';
-  //
-  // std::cout << std::endl;
-
 
   return reproduction(&population[parent1], &population[parent2]);
 }
@@ -108,14 +105,17 @@ Sol reproduction(Sol *parent1, Sol *parent2){
     new_child[i] = indexed_missing[ii].first;
     ii++;
    }
-   //
-   // for (auto i = new_child.begin(); i != new_child.end(); ++i)
-   //   std::cout << *i << ' ';
+
+   // on applique une mutation, un swap
+   int ind1 = rand()%new_child.size();
+   int ind2 = rand()%new_child.size();
+
+   std::iter_swap(new_child.begin()+ind1, new_child.begin()+ind2);
 
   return new_child;
 }
 
-Archive genere_pareto(unsigned int seed, int population, Instance *inst){
+Archive genere_pareto(unsigned int seed, int childs, int population, int max_iteration, Instance *inst){
 
   Archive sols;
   Sol sol;
@@ -127,7 +127,9 @@ Archive genere_pareto(unsigned int seed, int population, Instance *inst){
     sols.push_back(sol);
   }
 
-  mutation(sols, inst);
+  for (int i = 0; i < max_iteration; i++){
+      sols = new_generation(sols, childs, inst);
+  }
 
   return sols;
 

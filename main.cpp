@@ -63,43 +63,48 @@ using namespace std;
 //   return 0;
 // }
 
-int main(int argc, char** argv){
-
-  if (argc != 5){
-    std::cerr << "Bad args." << std::endl;
-    return -1;
-  }
-
-  std::istringstream iss( argv[3] );
-  std::istringstream iss2( argv[4] );
-  int seed;
-  float step;
-
-  if ( iss >> seed ){
-    if (iss2 >> step){
-      Sol mysol;
-
-      Instance* to_opti= new Instance(argv[1], argv[2]);
-      // Archive myarchive = genere_scalar(val, 0.1, 2.0, 500, to_opti);
-       Archive myarchive = genere_scalar_step(seed, step, to_opti);
-
-      std::stringstream ss;
-
-      ss << "./data/scalar_seed_" << argv[3] << "_step_" << argv[4] << ".txt";
-      write_archive(myarchive, to_opti, ss.str());
-    }
-  }
-
-  return 0;
-}
-
-
 // int main(int argc, char** argv){
-//   if (argc != 3){
+//
+//   if (argc != 5){
 //     std::cerr << "Bad args." << std::endl;
 //     return -1;
 //   }
 //
-//   Instance* to_opti= new Instance(argv[1], argv[2]);
-//   Archive myarchive = genere_pareto(3, 300, to_opti);
+//   std::istringstream iss( argv[3] );
+//   std::istringstream iss2( argv[4] );
+//   int seed;
+//   float step;
+//
+//   if ( iss >> seed ){
+//     if (iss2 >> step){
+//       Sol mysol;
+//
+//       Instance* to_opti= new Instance(argv[1], argv[2]);
+//       // Archive myarchive = genere_scalar(val, 0.1, 2.0, 500, to_opti);
+//        Archive myarchive = genere_scalar_step(seed, step, to_opti);
+//
+//       std::stringstream ss;
+//
+//       ss << "./data/scalar_seed_" << argv[3] << "_step_" << argv[4] << ".txt";
+//       write_archive(myarchive, to_opti, ss.str());
+//     }
+//   }
+//
+//   return 0;
 // }
+
+
+int main(int argc, char** argv){
+  if (argc != 3){
+    std::cerr << "Bad args." << std::endl;
+    return -1;
+  }
+
+  Instance* to_opti= new Instance(argv[1], argv[2]);
+  Archive myarchive = genere_pareto(3, 50, 300, 1000, to_opti);
+
+  std::stringstream ss;
+
+  ss << "./data/pareto_test.txt";
+  write_archive(myarchive, to_opti, ss.str());
+}
