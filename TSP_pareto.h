@@ -10,14 +10,19 @@
 #include "TSP_random.h"
 
 // prend une population, génère son voisinage et recréer une nouvelle population
-Archive new_generation(Archive population, int pcrt, Instance *inst);
+Archive selection(Archive pop, Archive baby_pop, int childs, Instance *inst);
+
+int best_parent(Archive population, std::vector<int> parents, int obji, Instance *inst);
+
+
+Archive new_generation(Archive population, int pcrt, int k, Instance *inst);
 
 // Choisit 2 parents dans la population et génère un enfant
-Sol choose_and_repro(Archive population);
+Sol choose_and_repro(Archive population, int k, Instance *inst);
 
 // Génère un enfant
 Sol reproduction(Sol *parent1, Sol *parent2);
 
-Archive genere_pareto(unsigned int seed, int childs, int population, int max_iteration, Instance *inst);
+Archive genere_pareto(unsigned int seed, int childs, int population, int max_iteration, int k, Instance *inst);
 
 #endif

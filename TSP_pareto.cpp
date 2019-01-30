@@ -27,11 +27,28 @@ Archive selection(Archive pop, Archive baby_pop, int childs, Instance *inst){
   return pop;
 }
 
+// Retourne le meilleur parent dans la liste
+int best_parent(Archive population, std::vector<int> parents, int obji, Instance *inst){
+  int bp = parents[0];
+  int best_score = eval_sol(&population[bp], inst)[obji];
+  int new_score;
+  for (auto p = parents.begin(); p != parents.end(); p++){
+    new_score = eval_sol(&population[*p], inst)[obji];
+
+    if (new_score < best_score){
+      best_score = new_score;
+      bp = *p;
+    }
+  }
+
+  return bp;
+}
+
 // Mutation de la population
-Archive new_generation(Archive population, int childs, Instance *inst){
+Archive new_generation(Archive population, int childs, int k, Instance *inst){
   Archive babies;
   for (int i = 0; i < childs; i++){
-    babies.push_back(choose_and_repro(population));
+    babies.push_back(choose_and_repro(population, k, inst));
   }
   return selection(population, babies, childs, inst);
 }
@@ -39,13 +56,27 @@ Archive new_generation(Archive population, int childs, Instance *inst){
 // Choisit un couple de parents qui se reproduit
 
 // K tournament selection
-Sol choose_and_repro(Archive population){
-  int parent1 = rand()%population.size();
-  int parent2 = rand()%population.size();
+Sol choose_and_repro(Archive population, int k, Instance *inst){
 
-  while (parent1 == parent2){
-    parent2 = rand()%population.size();
+  std::vector<int> parents1;
+  std::vector<int> parents2;
+
+  int rand1 = rand()%2;
+  int rand2 = rand()%2;
+
+  // liste des parents qui minimisent 1, liste des parents qui minimisent 2
+
+  for (int cpt = 0; cpt < k; cpt++){
+    parents1.push_back(rand()%population.size());
+    parents2.push_back(rand()%population.size());
   }
+
+  int parent1 = best_parent(population, parents1, rand1, inst);
+  int parent2 = best_parent(population, parents2, rand2, inst);
+
+  // while (parent1 == parent2){
+  //   parent2 = rand()%population.size();
+  // }
 
   return reproduction(&population[parent1], &population[parent2]);
 }
@@ -110,12 +141,12 @@ Sol reproduction(Sol *parent1, Sol *parent2){
    int ind1 = rand()%new_child.size();
    int ind2 = rand()%new_child.size();
 
-   std::iter_swap(new_child.begin()+ind1, new_child.begin()+ind2);
+  new_child = myswap(new_child, ind1, ind2);
 
   return new_child;
 }
 
-Archive genere_pareto(unsigned int seed, int childs, int population, int max_iteration, Instance *inst){
+Archive genere_pareto(unsigned int seed, int childs, int population, int max_iteration, int k, Instance *inst){
 
   Archive sols;
   Sol sol;
@@ -128,7 +159,7 @@ Archive genere_pareto(unsigned int seed, int childs, int population, int max_ite
   }
 
   for (int i = 0; i < max_iteration; i++){
-      sols = new_generation(sols, childs, inst);
+      sols = new_generation(sols, childs, k, inst);
   }
 
   return sols;
