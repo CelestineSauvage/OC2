@@ -12,11 +12,14 @@
 // prend une population, génère son voisinage et recréer une nouvelle population
 Archive selection(Archive pop, Archive baby_pop, int childs, Instance *inst);
 
+
+Archive selection_rank(Archive pop, Archive baby_pop,std::vector<int> rank, int childs, Instance *inst);
+
 int best_parent(Archive population, std::vector<int> parents, int obji, Instance *inst);
 
-int best_parent_rank(Archive population, std::vector<int> parents, std::vector<int> rank, Instance *inst);
+int best_parent_rank(std::vector<int> parents, std::vector<int> rank);
 
-Sol choose_and_repro_rank(Archive population, std::vector<int> rank, int k, Instance *inst);
+Sol choose_and_repro_rank(Archive population, std::vector<int>rank, int k);
 
 Archive new_generation(Archive population, int pcrt, int k, Instance *inst);
 

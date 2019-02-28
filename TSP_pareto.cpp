@@ -1,5 +1,6 @@
 #include "TSP_pareto.h"
 
+int iteration = 0;
 
 // Sélection de la population restante
 Archive selection(Archive pop, Archive baby_pop, int childs, Instance *inst){
@@ -27,6 +28,35 @@ Archive selection(Archive pop, Archive baby_pop, int childs, Instance *inst){
   return pop;
 }
 
+Archive selection_rank(Archive pop, Archive baby_pop,std::vector<int> rank, int childs, Instance *inst){
+  int sol1;
+  int sol2;
+  int i = 0;
+
+  std::vector<int> pr = pareto_rank(baby_pop, inst);
+  pop.insert(pop.end(), baby_pop.begin(), baby_pop.end() );
+  rank.insert(rank.end(), pr.begin(), pr.end() );
+
+  //random_shuffle(pop.begin(), pop.end());
+  while (i < childs){
+    sol1 = rand()%pop.size();
+    sol2 = rand()%pop.size();
+
+    if (rank[sol1] > rank[sol2]){
+      pop.erase(pop.begin()+sol2);
+      i++;
+    }
+    else if (rank[sol1] < rank[sol2]){
+      pop.erase(pop.begin()+sol1);
+      i++;
+    }
+
+  }
+  random_shuffle(pop.begin(), pop.end());
+
+  return pop;
+}
+
 // Retourne le meilleur parent dans la liste
 int best_parent(Archive population, std::vector<int> parents, int obji, Instance *inst){
   int bp = parents[0];
@@ -44,34 +74,54 @@ int best_parent(Archive population, std::vector<int> parents, int obji, Instance
   return bp;
 }
 
-// Mutation de la population
+int best_parent_rank(std::vector<int> parents, std::vector<int> rank){
+  int bp = parents[0];
+  int best_score = rank[bp];
+  int new_score;
+  for (auto p = parents.begin(); p != parents.end(); p++){
+    new_score = rank[*p];
+
+    if (new_score < best_score){
+      best_score = new_score;
+      bp = *p;
+    }
+  }
+
+  return bp;
+}
+
+// Nouvelle génération
 Archive new_generation(Archive population, int childs, int k, Instance *inst){
   Archive babies;
+  // std::vector<int> pr = pareto_rank(population, inst);
   for (int i = 0; i < childs; i++){
-    std::vector<int> pr = pareto_rank(pop, inst);
-    babies.push_back(choose_and_repro(population, pr, k, inst));
+    babies.push_back(choose_and_repro(population, k, inst));
   }
   return selection(population, babies, childs, inst);
 }
 
-Sol choose_and_repro_rank(Archive population, std::vector<int> rank, int k, Instance *inst){
+// Nouvelle génération
+Archive new_generation_rank(Archive population, int childs, int k, Instance *inst){
+  Archive babies;
+  std::vector<int> pr = pareto_rank(population, inst);
+  for (int i = 0; i < childs; i++){
+    babies.push_back(choose_and_repro_rank(population, pr, k));
+  }
+  return selection_rank(population, babies, pr, childs, inst);
+}
+
+Sol choose_and_repro_rank(Archive population, std::vector<int> rank, int k){
 
   std::vector<int> parents1;
   std::vector<int> parents2;
-
-  // liste des parents qui minimisent 1, liste des parents qui minimisent 2
 
   for (int cpt = 0; cpt < k; cpt++){
     parents1.push_back(rand()%population.size());
     parents2.push_back(rand()%population.size());
   }
 
-  int parent1 = best_parent_rank(population, parents1, rank, inst);
-  int parent2 = best_parent_rank(population, parents2, rank, inst);
-
-  // while (parent1 == parent2){
-  //   parent2 = rand()%population.size();
-  // }
+  int parent1 = best_parent_rank(parents1, rank);
+  int parent2 = best_parent_rank(parents2, rank);
 
   return reproduction(&population[parent1], &population[parent2]);
 }
@@ -160,11 +210,15 @@ Sol reproduction(Sol *parent1, Sol *parent2){
     ii++;
    }
 
+   if (iteration%10 == 0){
    // on applique une mutation, un swap
-   int ind1 = rand()%new_child.size();
-   int ind2 = rand()%new_child.size();
-
-  new_child = myswap(new_child, ind1, ind2);
+     int ind1 = rand()%new_child.size();
+     int ind2 = rand()%new_child.size();
+     if (ind1 < ind2)
+        new_child = myswap(new_child, ind1, ind2);
+    else
+        new_child = myswap(new_child, ind2, ind1);
+  }
 
   return new_child;
 }
@@ -181,8 +235,8 @@ Archive genere_pareto(unsigned int seed, int childs, int population, int max_ite
     sols.push_back(sol);
   }
 
-  for (int i = 0; i < max_iteration; i++){
-      sols = new_generation(sols, childs, k, inst);
+  for (; iteration < max_iteration; iteration++){
+      sols = new_generation_rank(sols, childs, k, inst);
   }
 
   return sols;

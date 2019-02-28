@@ -106,28 +106,17 @@ Domination compare(Sol sol1, Sol sol2, Instance *inst){
   return NO_DOMINATION;
 }
 
-int dominance_count(Archive pop, Sol sol, Instance *inst){
-  int nb_dom = 0;
-  for (auto it = pop.begin(); it != pop.end(); it ++){
-    if (*it != sol){
-      if (compare(*it, sol, inst) == SOL1_DOMINATION)
-        nb_dom++;
-    }
-  }
-  return nb_dom;
-}
-
 // renvoie la dominance rank de la population pareto
 std::vector<int> pareto_rank(Archive pop, Instance *inst){
-  std::vector<int> pr = (pop.size(), 0);
+  std::vector<int> pr (pop.size(), 0);
   for (unsigned int i = 0; i < pop.size() - 1; i++){
       for (unsigned int j = i + 1; j < pop.size(); j++){
         Domination comp = compare(pop[i], pop[j], inst);
 
-        if (comp == SOL1_DOMINATION){
+        if (comp == SOL2_DOMINATION){
           pr[i]++;
         }
-        else (comp == SOL2_DOMINATION){
+        else if (comp == SOL1_DOMINATION){
           pr[j]++;
         }
       }
