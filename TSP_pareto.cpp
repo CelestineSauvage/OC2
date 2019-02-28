@@ -1,6 +1,7 @@
 #include "TSP_pareto.h"
 
 int iteration = 0;
+int mutation = 10;
 
 // Sélection de la population restante
 Archive selection(Archive pop, Archive baby_pop, int childs, Instance *inst){
@@ -210,7 +211,7 @@ Sol reproduction(Sol *parent1, Sol *parent2){
     ii++;
    }
 
-   if (iteration%10 == 0){
+   if (iteration%mutation == 0){
    // on applique une mutation, un swap
      int ind1 = rand()%new_child.size();
      int ind2 = rand()%new_child.size();
@@ -223,10 +224,13 @@ Sol reproduction(Sol *parent1, Sol *parent2){
   return new_child;
 }
 
-Archive genere_pareto(unsigned int seed, int childs, int population, int max_iteration, int k, Instance *inst){
+Archive genere_pareto(unsigned int seed, int childs, int population, int max_iteration, int k, int mut, Instance *inst){
 
   Archive sols;
+  Archive archive;
   Sol sol;
+
+  mutation = mut;
 
   srand(seed);
 
@@ -236,9 +240,13 @@ Archive genere_pareto(unsigned int seed, int childs, int population, int max_ite
   }
 
   for (; iteration < max_iteration; iteration++){
-      sols = new_generation_rank(sols, childs, k, inst);
+      sols = new_generation(sols, childs, k, inst);
   }
 
-  return sols;
+  for (auto it = sols.begin(); it != sols.end(); it++){
+    filter_online(archive, *it, inst);
+  }
+
+  return archive;
 
 }

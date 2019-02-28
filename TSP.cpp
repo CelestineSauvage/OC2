@@ -10,15 +10,6 @@ float fRand(float fMin, float fMax){
     return fMin + f * (fMax - fMin);
 }
 
-// Sol* two_opt(Sol *sol, int id1, int id2){
-//  while (id1 < id2){
-//   std::iter_swap(sol->begin()+id1, sol->begin()+id2);
-//   id1++;
-//   id2--;
-//  }
-//  return sol;
-// }
-
 // Change la solution
 Sol myswap(Sol sol, int i, int j){
  while (i < j){
@@ -41,23 +32,6 @@ float eval_weight(Sol *mysol, float w1, float w2, Instance *inst){
 
   return evals;
 }
-
-// int evaluations_weight2
-// (Sol *solution, float w1, float w2, Instance *inst){
-//   int evals = 0;
-//   Sol &mysolr = *solution;
-//
-//   for (size_t j = 0; j < solution->size()-1; j++){
-//     std::vector<int> *dist = inst->getValue(mysolr[j], mysolr[j+1]);
-//     evals += w1 * dist->at(0);
-//     evals += w2 * dist->at(1);
-//   }
-//   std::vector<int> *dist = inst->getValue(mysolr[solution->size()-1], mysolr[0]);
-//   evals += w1 * dist->at(0);
-//   evals += w2 * dist->at(1);
-//
-//   return evals;
-// }
 
 /*
 Évalue une solution

@@ -29,6 +29,6 @@ Sol choose_and_repro(Archive population, int k, Instance *inst);
 // Génère un enfant
 Sol reproduction(Sol *parent1, Sol *parent2);
 
-Archive genere_pareto(unsigned int seed, int childs, int population, int max_iteration, int k, Instance *inst);
+Archive genere_pareto(unsigned int seed, int childs, int population, int max_iteration, int k, int mut, Instance *inst);
 
 #endif

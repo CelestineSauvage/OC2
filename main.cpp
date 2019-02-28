@@ -95,16 +95,42 @@ using namespace std;
 
 
 int main(int argc, char** argv){
-  if (argc != 3){
+  if (argc != 6){
     std::cerr << "Bad args." << std::endl;
     return -1;
   }
 
   Instance* to_opti= new Instance(argv[1], argv[2]);
-  Archive myarchive = genere_pareto(4, 200, 200, 1000, 4, to_opti);
+
+    std::istringstream iss( argv[3] );
+    std::istringstream iss2( argv[4] );
+    std::istringstream iss3( argv[5] );
+    int pop;
+    int k;
+    int mutation;
+
+    if ( (iss >> pop) && (iss2 >> k) && (iss3 >> mutation)){
+  //
+  //   if ( iss >> seed ){
+  //     if (iss2 >> step){
+  //       Sol mysol;
+  //
+  //       Instance* to_opti= new Instance(argv[1], argv[2]);
+  //       // Archive myarchive = genere_scalar(val, 0.1, 2.0, 500, to_opti);
+  //        Archive myarchive = genere_scalar_step(seed, step, to_opti);
+  //
+  //       std::stringstream ss;
+  //
+  //       ss << "./data/scalar_seed_" << argv[3] << "_step_" << argv[4] << ".txt";
+  //       write_archive(myarchive, to_opti, ss.str());
+  //     }
+  //   }
+    Archive myarchive = genere_pareto(1, pop, pop, 2000, k, mutation, to_opti);
+
 
   std::stringstream ss;
 
-  ss << "./data/pareto_test_4.txt";
+  ss << "./data/pareto_pop" << argv[3] << "_k_" << argv[4] << "_mutation_" << argv[5] << ".txt";
   write_archive(myarchive, to_opti, ss.str());
+  }
 }
